@@ -11,6 +11,16 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerAnimation PlayerAnimation;
 
+    // Shitft Check
+    [SerializeField] private float walkSpeed = 5f;
+
+    [SerializeField] private float runSpeed = 8f;
+
+    private bool isRunning;
+
+    // move Speed
+    float currentSpeed;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -25,13 +35,18 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 moveInput = new Vector2(horizontal, vertical).normalized;
 
-        PlayerAnimation.UpdateMovement(moveInput);
+        //shift check
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+
+        currentSpeed = isRunning ? runSpeed : moveSpeed;
+
+        PlayerAnimation.UpdateMovement(moveInput, isRunning);
 
         moveDirection = new Vector3(horizontal, 0, vertical).normalized;
     }
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + moveDirection * currentSpeed * Time.fixedDeltaTime);
     }
 }
