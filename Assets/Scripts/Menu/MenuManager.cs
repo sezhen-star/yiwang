@@ -11,7 +11,7 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("OpeningCG");
+        SceneLoader.Instance.LoadScene("OpeningCG");
     }
 
     public void ShowCredits()
