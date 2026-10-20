@@ -5,7 +5,7 @@ public class PlayerInteractor : MonoBehaviour
 {
     private Inventory inventory;
 
-    private ItemPickUp currentItem;
+    private IInteractable currentInteractable;
 
     private void Start()
     {
@@ -14,33 +14,44 @@ public class PlayerInteractor : MonoBehaviour
 
     private void Update()
     {
-        if (currentItem != null && Input.GetKeyDown(KeyCode.E))
+        if (currentInteractable != null && Input.GetKeyDown(KeyCode.E))
         {
-            inventory.AddItem(currentItem.itemName);
+            currentInteractable.Interact();
 
-            Destroy(currentItem.gameObject);
+            ItemPickUp item = currentInteractable as ItemPickUp;
+
+            if (item != null)
+            {
+                inventory.AddItem(item.GetItemName());
+
+                Destroy(item.gameObject);
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        ItemPickUp item = other.GetComponent<ItemPickUp>();
+        IInteractable interactable = other.GetComponent<IInteractable>();
 
-        if (item != null)
+        if (interactable != null)
         {
-            currentItem = item;
+            currentInteractable = interactable;  //进入物品范围
 
-            Debug.Log("按E拾取： " + item.itemName);
+            currentInteractable.HighLight();
+
+            Debug.Log(interactable.GetPrompt());
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        ItemPickUp item = other.GetComponent<ItemPickUp>();
+        IInteractable interactable = other.GetComponent<IInteractable>();
 
-        if (item == currentItem)
+        if (interactable == currentInteractable)
         {
-            currentItem = null;
+            currentInteractable.UnHighLight();
+
+            currentInteractable = null;   //离开物品范围
         }
     }
 }
