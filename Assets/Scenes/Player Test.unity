@@ -927,6 +927,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
   promptText: {fileID: 1422783012}
+  mainCamera: {fileID: 330585545}
 --- !u!114 &1163480407
 MonoBehaviour:
   m_ObjectHideFlags: 0
