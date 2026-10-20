@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 
 public class PlayerInteractor : MonoBehaviour
@@ -6,6 +7,8 @@ public class PlayerInteractor : MonoBehaviour
     private Inventory inventory;
 
     private IInteractable currentInteractable;
+
+    [SerializeField] private TMP_Text promptText; //互动物品的文字
 
     private void Start()
     {
@@ -39,6 +42,10 @@ public class PlayerInteractor : MonoBehaviour
 
             currentInteractable.HighLight();
 
+            promptText.text = currentInteractable.GetPrompt(); //互动物品的文字出现
+
+            promptText.gameObject.SetActive(true);
+
             Debug.Log(interactable.GetPrompt());
         }
     }
@@ -52,6 +59,8 @@ public class PlayerInteractor : MonoBehaviour
             currentInteractable.UnHighLight();
 
             currentInteractable = null;   //离开物品范围
+
+            promptText.gameObject.SetActive(false); //互动物品的文字消失
         }
     }
 }
